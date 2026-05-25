@@ -41,6 +41,11 @@ typedef struct {
     float output_min;        /* Salida mínima (0.0 = SSR siempre apagado) */
     float output_max;        /* Salida máxima (1.0 = SSR siempre encendido) */
 
+    /* Últimos términos calculados (para diagnóstico y graficado) */
+    float p_term;            /* Último término proporcional calculado */
+    float i_term;            /* Último término integral calculado */
+    float d_term;            /* Último término derivativo calculado */
+
     /* Configuración temporal */
     float dt;                /* Período de muestreo en segundos */
     int first_run;           /* Flag para inicializar la derivada en la primera ejecución */

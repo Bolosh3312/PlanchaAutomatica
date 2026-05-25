@@ -36,6 +36,9 @@ void pid_init(pid_controller_t *pid, float kp, float ki, float kd, float dt) {
     pid->integral = 0.0f;
     pid->prev_measurement = 0.0f;
     pid->first_run = 1;
+    pid->p_term = 0.0f;
+    pid->i_term = 0.0f;
+    pid->d_term = 0.0f;
 
     /* Límites del integral: evitan que se acumule más allá de lo que
        la salida puede usar (anti-windup) */
@@ -76,6 +79,12 @@ float pid_compute(pid_controller_t *pid, float measurement) {
 
     /* Salida final: suma de los tres términos, limitada entre 0 y 1 */
     float output = p_term + i_term + d_term;
+
+    /* Guardar términos para diagnóstico y graficado serial */
+    pid->p_term = p_term;
+    pid->i_term = i_term;
+    pid->d_term = d_term;
+
     return clamp(output, pid->output_min, pid->output_max);
 }
 

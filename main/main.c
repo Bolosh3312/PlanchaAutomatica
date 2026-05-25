@@ -360,6 +360,19 @@ void app_main(void) {
             }
         }
 
+        /* --- Enviar datos por serial para graficado en tiempo real --- */
+        /* Formato: DATA,timestamp_ms,temp,setpoint,duty,estado,P,I,D   */
+        /* El script Python (plot_plancha.py) filtra líneas con "DATA,"  */
+        printf("DATA,%lu,%.2f,%.1f,%.4f,%s,%.4f,%.4f,%.4f\n",
+            (unsigned long)(xTaskGetTickCount() * portTICK_PERIOD_MS),
+            current_temp,
+            pid.setpoint,
+            current_duty,
+            state_names[current_state],
+            pid.p_term,
+            pid.i_term,
+            pid.d_term);
+
         /* --- Procesar botón (si fue presionado) --- */
         if (button_flag) {
             button_flag = false;
